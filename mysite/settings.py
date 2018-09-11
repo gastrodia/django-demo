@@ -31,14 +31,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'mongonaut',       
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
+    'api'
     ]
 
 MIDDLEWARE = [
@@ -109,12 +109,16 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # mongoengine.django.sessions
 
 DATABASES = {
-    'default': {
-        'ENGINE': None, # 把默认的数据库连接至为None
+   'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'test',  # 数据库名字(需要先创建)
+        'USER': 'postgres',  # 登录用户名
+        'PASSWORD': 'postgres',  # 密码
+        'HOST': '',  # 数据库IP地址,留空默认为localhost
+        'PORT': '5432',  # 端口
     }
 }
-from mongoengine import connect
-connect('test') # 连接的数据库名称
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

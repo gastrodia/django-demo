@@ -3,6 +3,22 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 
+from .models import *
+from rest_framework import routers, serializers, viewsets
+
+# Serializers define the API representation.
+class AnimalSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Animal
+        fields = ('name', 'age')
+
+class AnimalViewSet(viewsets.ModelViewSet):
+    queryset = Animal.objects.all()
+    serializer_class = AnimalSerializer
+
+router = routers.DefaultRouter()
+router.register(r'animals', AnimalViewSet)
+
 @csrf_exempt
 def run_job(request):
     # 判断请求头是否为json
@@ -23,3 +39,14 @@ def run_job(request):
             return JsonResponse(data=content, status=status.HTTP_200_OK)
     # 如果不是post 请求返回不支持的请求方法
     return HttpResponseNotAllowed(permitted_methods=['POST'])
+
+
+
+# @csrf_exempt
+# def get_animals(request):
+#     animals = Animal.objects.all()
+#     data = serializers.serialize("json", animals)
+#     return HttpResponse(data)
+
+
+#todo 直接使用sql https://www.cnblogs.com/lijintian/p/6100097.html
